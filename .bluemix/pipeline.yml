@@ -2,7 +2,8 @@
 stages:
 - name: BUILD
   inputs:
-  - type: git
+  - url: https://git.ng.bluemix.net/arkithered/loggy-node-20170513160252051.git
+    type: git
     branch: master
     service: ${SAMPLE_REPO}
   triggers:
@@ -10,6 +11,20 @@ stages:
   jobs:
   - name: Build
     type: builder
+    artifact_dir: ''
+    build_type: npm
+    script: |-
+      #!/bin/bash
+      # The default Node.js version is 0.10.40
+      # To use Node.js 0.10.48, uncomment the following line:
+      #export PATH=/opt/IBM/node-v0.10.48/bin:$PATH
+      # To use Node.js 0.12.7, uncomment the following line:
+      #export PATH=/opt/IBM/node-v0.12/bin:$PATH
+      # To use Node.js 4.4.5, uncomment the following line:
+      #export PATH=/opt/IBM/node-v4.4.5/bin:$PATH
+      # To use Node.js 6.7.0, uncomment the following line:
+      #export PATH=/opt/IBM/node-v6.7.0/bin:$PATH
+      npm install
 - name: DEPLOY
   inputs:
   - type: job
@@ -34,29 +49,7 @@ stages:
       application: ${CF_APP_NAME}
     script: |
       #!/bin/bash
-      # Push app
-      if ! cf app $CF_APP; then  
-        cf push $CF_APP
-      else
-        OLD_CF_APP=${CF_APP}-OLD-$(date +"%s")
-        rollback() {
-          set +e  
-          if cf app $OLD_CF_APP; then
-            cf logs $CF_APP --recent
-            cf delete $CF_APP -f
-            cf rename $OLD_CF_APP $CF_APP
-          fi
-          exit 1
-        }
-        set -e
-        trap rollback ERR
-        cf rename $CF_APP $OLD_CF_APP
-        cf push $CF_APP
-        cf delete $OLD_CF_APP -f
-      fi
-      # Export app name and URL for use in later Pipeline jobs
-      export CF_APP_NAME="$CF_APP"
-      export APP_URL=http://$(cf app $CF_APP_NAME | grep urls: | awk '{print $2}')
+      cf push "${CF_APP}"
       # View logs
-      #cf logs "${CF_APP}" --recent
+      # cf logs "${CF_APP}" --recent
       

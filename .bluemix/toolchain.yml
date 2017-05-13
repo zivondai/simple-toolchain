@@ -13,7 +13,7 @@ template:
     - sample-repo
   info:
     git url: >-
-      [https://github.com/open-toolchain/simple-toolchain](https://github.com/open-toolchain/simple-toolchain)
+      [https://github.com/zivondai/simple-toolchain](https://github.com/zivondai/simple-toolchain)
     git branch: >-
       [master](https://github.com/open-toolchain/simple-toolchain/tree/master)
 toolchain:
@@ -26,7 +26,7 @@ services:
     service_id: githubpublic
     parameters:
       repo_name: '{{toolchain.name}}'
-      repo_url: 'https://github.com/open-toolchain/node-hello-world'
+      repo_url: 'https://git.ng.bluemix.net/arkithered/loggy-node-20170513160252051.git'
       type: clone
       has_issues: true
   sample-build:

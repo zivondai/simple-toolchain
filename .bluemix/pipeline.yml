@@ -2,7 +2,7 @@
 stages:
 - name: BUILD
   inputs:
-  - url: https://git.ng.bluemix.net/arkithered/loggy-node-20170513160252051.git
+  - url: https://github.com/zivondai/simple-toolchain-loggy-node-1.git
     type: git
     branch: master
     service: ${SAMPLE_REPO}
